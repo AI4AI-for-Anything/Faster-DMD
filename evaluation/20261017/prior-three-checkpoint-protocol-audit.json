@@ -1,0 +1,472 @@
+{
+  "checked_at": "2026-10-16 18:40:52 +0800",
+  "recorded_protocol_identical": true,
+  "run_plan_without_checkpoint_identical": true,
+  "shared_run_plan": {
+    "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+    "serial_evaluator_sha256": "6ad91b72e1bfed70e9e137c60771b2b33fdb9f51ffe259df7746979f38117ebb",
+    "upstream_sampler_file_sha256": "10f2d7df02d626ff51a2017e6e840818671214a258798fe33326f1b48c4bef89",
+    "samples": 30000,
+    "seed": 10,
+    "batch_size": 10,
+    "pred_eps": true,
+    "shards": 8,
+    "parity_samples": 80
+  },
+  "runs": {
+    "ours": {
+      "fid": 8.70301460173539,
+      "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+      "protocol": {
+        "samples": 30000,
+        "seed": 10,
+        "eval_batch_size": 10,
+        "eval_res": 256,
+        "reference_images": 40504,
+        "pred_eps": true,
+        "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+      },
+      "shards": [
+        {
+          "samples": 3750,
+          "batch_offset": 0,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 375,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 750,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1125,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1500,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1875,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2250,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2625,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        }
+      ],
+      "parity_80_byte_identical": true
+    },
+    "official": {
+      "fid": 8.342909368778805,
+      "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+      "protocol": {
+        "samples": 30000,
+        "seed": 10,
+        "eval_batch_size": 10,
+        "eval_res": 256,
+        "reference_images": 40504,
+        "pred_eps": true,
+        "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+      },
+      "shards": [
+        {
+          "samples": 3750,
+          "batch_offset": 0,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 375,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 750,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1125,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1500,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1875,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2250,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2625,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        }
+      ],
+      "parity_80_byte_identical": true
+    },
+    "official_039000": {
+      "fid": 9.27584408091667,
+      "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+      "protocol": {
+        "samples": 30000,
+        "seed": 10,
+        "eval_batch_size": 10,
+        "eval_res": 256,
+        "reference_images": 40504,
+        "pred_eps": true,
+        "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+      },
+      "shards": [
+        {
+          "samples": 3750,
+          "batch_offset": 0,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 375,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 750,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1125,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1500,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 1875,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2250,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        },
+        {
+          "samples": 3750,
+          "batch_offset": 2625,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97"
+        }
+      ],
+      "parity_80_byte_identical": true
+    }
+  },
+  "shared_asset_evidence": {
+    "reference_images": 40504,
+    "reference_mtimes_predate_evals": true,
+    "assets_mtimes_predate_evals": true,
+    "scorer_mtimes_predate_evals": true,
+    "prompt_sha256_current": "eed8e26af8164646274175bdb8070292a113497b692fefe594ae098b6676c839",
+    "scorer_sha256_current": {
+      "main/coco_eval/coco_evaluator.py": "42ea9c678ba51857c91c9dee51cb06b6fb7d31a3f372b2f8f8e167f309293e76",
+      "main/coco_eval/cleanfid/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "main/coco_eval/cleanfid/clip_features.py": "2b593840f995ee295adbb7626765bc43627a228f851cd23c7a8a3e27dd1d49ff",
+      "main/coco_eval/cleanfid/downloads_helper.py": "365c11ae4d8db831926fb7cb1f99da1f656144acbe976ca55a7cb50611458ffd",
+      "main/coco_eval/cleanfid/features.py": "4b4239b5d56e793d70621c2bcaaa774f23f42d247535f6b07588669560f1e394",
+      "main/coco_eval/cleanfid/fid.py": "63034104bd5d0f7004411cf856908d40036b97f53f7d421e15a16da19c93faf5",
+      "main/coco_eval/cleanfid/inception_pytorch.py": "2940edf2a7963af8f00c152c4d61c7903590c9056b177d209dd45d10632863eb",
+      "main/coco_eval/cleanfid/inception_torchscript.py": "bf7194c7b2c70a5417f683e046969c6126d746ea3b97d1feae2353649749a227",
+      "main/coco_eval/cleanfid/leaderboard.py": "fc79c86011b75aa7535e61c051b79d1cd041b731bd4ef014cf2c002a0ca02a2d",
+      "main/coco_eval/cleanfid/resize.py": "c603618c2e5b4aad377f0214505a82ad051c1bd24d955bb4c3f02a4f5c286b5e",
+      "main/coco_eval/cleanfid/utils.py": "5f32243cc721a88764d785d61dcc3f8de5931de7f6752c4b8d3030229fe85f5b",
+      "main/coco_eval/cleanfid/wrappers.py": "5098cd2f2f4e8d3a69794636fb2494596367236d103eb698d9346ed0b7b36a11"
+    }
+  },
+  "limitations": "Historical per-run content hashes cover worker/sampler, not every shared reference image, VAE/text encoder weight or dependency. Current shared file metadata predates evaluation; this is not three independent historical content manifests. 80-image parity is per-checkpoint serial/parallel calibration, not full-30k serial validation or equality between checkpoints."
+}

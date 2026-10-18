@@ -1,0 +1,730 @@
+{
+  "original_accum_041000": {
+    "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+    "fid": 8.653609178209024,
+    "samples": 30000,
+    "seed": 10,
+    "eval_batch_size": 10,
+    "eval_res": 256,
+    "reference_images": 40504,
+    "pred_eps": true,
+    "fid_and_merge_seconds": 112.24048174801283,
+    "sampling_shards": [
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 0,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/0/images.npy",
+        "images_sha256": "e30af57ab13d58c3c2e0e01d6dc7965b43a5229a5f2f0fe05be65dc8567db150",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 508.63971075601876,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 375,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/1/images.npy",
+        "images_sha256": "c61c97263506e9b509ef5bf12c282ffde585258fd1c10e2a640631d81baa9e9a",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 506.30837749596685,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 750,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/2/images.npy",
+        "images_sha256": "df7dadfcb89bea60372e7c70e2a6fc5099b6cf3d4353ba658dc9c1c64a73a91a",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 505.3625453870045,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1125,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/3/images.npy",
+        "images_sha256": "ed87353d5d6e52bb65b6af8a43fbe362d55c5c8a3eaccf3d814a3604ccde9b02",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 508.61932977999095,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1500,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/4/images.npy",
+        "images_sha256": "eeb88732bea1508162cd96255d685db5d246d0c7e1cb48bcd02721378b412724",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 506.15180741704535,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1875,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/5/images.npy",
+        "images_sha256": "d9ef320c351f9bbc88d73796e432dba46d566a001c22dbf0928ac130fe31ca46",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 503.215365236043,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2250,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/6/images.npy",
+        "images_sha256": "22cc26436394e8f11461e5720145dbd62d3e98df43211f37f95b6f43c8d2d442",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 503.0593695170246,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2625,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/7/images.npy",
+        "images_sha256": "f3423f36e57bd3f9343b036343881b97d40765404585d6bfec986df363fc2677",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 493.7428839399945,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      }
+    ],
+    "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+  },
+  "optimized_041000": {
+    "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+    "fid": 8.70301460173539,
+    "samples": 30000,
+    "seed": 10,
+    "eval_batch_size": 10,
+    "eval_res": 256,
+    "reference_images": 40504,
+    "pred_eps": true,
+    "fid_and_merge_seconds": 106.18532753398176,
+    "sampling_shards": [
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 0,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/0/images.npy",
+        "images_sha256": "0b3a7abbd07157270d20a3a692683621b56c48279d0a382a08194b846224d7bd",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 417.4210915219737,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 375,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/1/images.npy",
+        "images_sha256": "12757cc5fb0de78882c5b56719300eecbf179fc755dce43c4c47765ce807db91",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 433.9702562079765,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 750,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/2/images.npy",
+        "images_sha256": "26ed78b2a439359a999697f668556a26f03547be7e82e16fac3a38feb3181006",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 431.2042421720107,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1125,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/3/images.npy",
+        "images_sha256": "42c95829a66f7fe99b5e8a8a9334eec6288b491a9311010a56f54e754fd4bb64",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 417.70913815201493,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1500,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/4/images.npy",
+        "images_sha256": "1b627c709470e5804a623951fbd2bc907739ce522e76f7ba6c20331f639595de",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 418.13171053497354,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1875,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/5/images.npy",
+        "images_sha256": "e781402a828c7433eedaadcbcfd8597121ad8e3c9b3cf1dfcaf98834cf9e00cd",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 431.37864300899673,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2250,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/6/images.npy",
+        "images_sha256": "3c6231ea22a49ba4b20bc47995ca9ddadf7ab49c78e0df1171e74a357edbc44a",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 417.8242407240323,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-run/full/output/time_1792074481_seed10/checkpoint_model_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2625,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/ours/full_shards/7/images.npy",
+        "images_sha256": "6b90e1f8d891dc777562f1cc256cee5054d6acc027700b6da23779257dcfcedb",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 421.17507240595296,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      }
+    ],
+    "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+  },
+  "official_041000": {
+    "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+    "fid": 8.342909368778805,
+    "samples": 30000,
+    "seed": 10,
+    "eval_batch_size": 10,
+    "eval_res": 256,
+    "reference_images": 40504,
+    "pred_eps": true,
+    "fid_and_merge_seconds": 106.67845421499806,
+    "sampling_shards": [
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 0,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/0/images.npy",
+        "images_sha256": "76c9a753e388546b23de5d1d7b2390d9cb5f7201d4363b776c71879f17a09dff",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 412.68576028203825,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 375,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/1/images.npy",
+        "images_sha256": "f22d3603d9ed24f20e07c9908276be29e1d333f4ffed8a0078b2595d930e7c05",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 413.2332740150159,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 750,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/2/images.npy",
+        "images_sha256": "178624b5b328961f587124bee8f8ef22994ddfe16b99050e2de1945dbc6858b8",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 414.44456113199703,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1125,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/3/images.npy",
+        "images_sha256": "373cc3fbcdd72c806b037ed40d72363091eecb296d36ffa8fbd58b90e50fd84c",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 414.03678257903084,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1500,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/4/images.npy",
+        "images_sha256": "837fad4fc2a5d32636e61306cc39678b2d4519284af3520cb8af51dd51835318",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 415.3458869429887,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1875,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/5/images.npy",
+        "images_sha256": "2e09e7703c16ec2377095dc085ccaa666a7e17c6284aa34f353e2e79aa25664a",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 413.8342425120063,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2250,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/6/images.npy",
+        "images_sha256": "ea4f7681520e3bebaba76bf5b881a5b825a747d840a2818dedba900d9ac033b7",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 412.84974338900065,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/official_041000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2625,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/final-checkpoints/official/full_shards/7/images.npy",
+        "images_sha256": "bc761fff93bfc0dcca20ac3080e5b2470dcde3d267b68db0f0a2fbc65aabd32c",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 421.15098556503654,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      }
+    ],
+    "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+  },
+  "official_039000": {
+    "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+    "fid": 9.27584408091667,
+    "samples": 30000,
+    "seed": 10,
+    "eval_batch_size": 10,
+    "eval_res": 256,
+    "reference_images": 40504,
+    "pred_eps": true,
+    "fid_and_merge_seconds": 107.23132735700347,
+    "sampling_shards": [
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 0,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/0/images.npy",
+        "images_sha256": "5ae507875c574ccc41f1916a7ef40950a1c92fff5cce4677f8de815ba8ae02f8",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 417.12973336694995,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 375,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/1/images.npy",
+        "images_sha256": "50a1167d1878a21765709089e282b732cd3a4778bd0a413e9db6d4d5d205c6e7",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 448.51123801403446,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 750,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/2/images.npy",
+        "images_sha256": "d6444020921af13ea3bef38e6342bf3753e9c08900b340c15ddef0ae7d3bd18d",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 450.5383947599912,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1125,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/3/images.npy",
+        "images_sha256": "89e70aece0cf48e355210080b7900c9b7125e55ca2f7dea0d079003774d01faf",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 418.0555724139558,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1500,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/4/images.npy",
+        "images_sha256": "d2e1c3bfb68ba0c299d304b1108ad04faee97690204e8b8b738c149e1085913e",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 447.47535696602426,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 1875,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/5/images.npy",
+        "images_sha256": "be0b0ab5b87abe2ed43f99d6e59a2e32b2c7283eb2cbedda14c62cc9a8b02124",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 447.83795939799165,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2250,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/6/images.npy",
+        "images_sha256": "bc66ddfdcdd58b36bd77a2e540ee17d1801678f48ee04523500174e2e7f38c9f",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 415.9042632239871,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      },
+      {
+        "checkpoint": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000/pytorch_model.bin",
+        "samples": 3750,
+        "batch_offset": 2625,
+        "pred_eps": true,
+        "seed": 10,
+        "batch_size": 10,
+        "dtype": "uint8",
+        "shape": [
+          3750,
+          512,
+          512,
+          3
+        ],
+        "images_file": "/path/to/evaluation/official-39k/official_039000/full_shards/7/images.npy",
+        "images_sha256": "636b927d593dc46cdec466d2a24042f277523d9e40c00b1f0be3665b4fdae360",
+        "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+        "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+        "seconds": 447.9684644090012,
+        "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+      }
+    ],
+    "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+  }
+}

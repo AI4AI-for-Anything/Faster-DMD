@@ -5,20 +5,23 @@ from main.sd_image_dataset import SDImageDatasetLMDB
 from transformers import CLIPTokenizer, AutoTokenizer
 from accelerate.utils import ProjectConfiguration
 from diffusers.optimization import get_scheduler
-from main.utils import SDTextDataset, cycle 
+from main.utils import SDTextDataset, cycle
 from main.sd_unified_model import SDUniModel
 from accelerate.utils import set_seed
 from accelerate import Accelerator
+from accelerate.utils import DistributedDataParallelKwargs
 from torch.distributed.fsdp import (
     FullyShardedDataParallel as FSDP,
     FullStateDictConfig,
     StateDictType
 )
-import argparse 
-import shutil 
-import wandb 
-import torch 
-import time 
+import json
+from main.accumulation import accumulated_step
+import argparse
+import shutil
+import wandb
+import torch
+import time
 import os
 
 class Trainer:
@@ -26,17 +29,22 @@ class Trainer:
         self.args = args
 
         torch.backends.cuda.matmul.allow_tf32 = True
-        torch.backends.cudnn.allow_tf32 = True 
+        torch.backends.cudnn.allow_tf32 = True
+        torch.backends.cudnn.benchmark = True
 
         accelerator_project_config = ProjectConfiguration(logging_dir=args.log_path)
         accelerator = Accelerator(
-            gradient_accumulation_steps=args.gradient_accumulation_steps,
+            gradient_accumulation_steps=1,  # explicit two-optimizer accumulation below
             mixed_precision="no",
             log_with="wandb",
             project_config=accelerator_project_config,
-            kwargs_handlers=None,
+            kwargs_handlers=[DistributedDataParallelKwargs(gradient_as_bucket_view=True)],
             dispatch_batches=False
         )
+        actual_batch = args.batch_size * accelerator.num_processes * args.gradient_accumulation_steps
+        if args.target_global_batch_size is not None and actual_batch != args.target_global_batch_size:
+            raise ValueError(f'Global batch {actual_batch} != target {args.target_global_batch_size}')
+        print(f'BATCH_PLAN world={accelerator.num_processes} micro={args.batch_size} accumulation={args.gradient_accumulation_steps} global={actual_batch} schedule_world={args.schedule_world_size}', flush=True)
         set_seed(args.seed + accelerator.process_index)
 
         print(accelerator.state)
@@ -52,7 +60,7 @@ class Trainer:
 
             os.makedirs(args.log_path, exist_ok=True)
 
-            run = wandb.init(config=args, dir=args.log_path, **{"mode": "online", "entity": args.wandb_entity, "project": args.wandb_project})
+            run = wandb.init(config=args, dir=args.log_path, **{"mode": "offline", "entity": args.wandb_entity, "project": args.wandb_project})
             wandb.run.log_code(".")
             wandb.run.name = args.wandb_name
             print(f"run dir: {run.dir}")
@@ -62,9 +70,9 @@ class Trainer:
         self.model = SDUniModel(args, accelerator)
         self.max_grad_norm = args.max_grad_norm
         self.denoising = args.denoising
-        self.step = 0 
+        self.step = 0
 
-        if self.denoising: assert args.sdxl, "denoising only supported for sdxl." 
+        if self.denoising: assert args.sdxl, "denoising only supported for sdxl."
 
         if args.ckpt_only_path is not None:
             if accelerator.is_main_process:
@@ -81,8 +89,8 @@ class Trainer:
                 print(f"loading generator ckpt from {args.generator_ckpt_path}")
             print(self.model.feedforward_model.load_state_dict(torch.load(args.generator_ckpt_path, map_location="cpu"), strict=True))
 
-        self.sdxl = args.sdxl 
-        
+        self.sdxl = args.sdxl
+
         if self.sdxl:
             tokenizer_one = AutoTokenizer.from_pretrained(
                 args.model_id, subfolder="tokenizer", revision=args.revision, use_fast=False
@@ -93,34 +101,34 @@ class Trainer:
             )
 
             dataset = SDTextDataset(
-                args.train_prompt_path, 
-                is_sdxl=True,
-                tokenizer_one=tokenizer_one,
-                tokenizer_two=tokenizer_two
-            )  
-
-            # also load the training dataset images, this will be useful for GAN loss 
-            real_dataset = SDImageDatasetLMDB(
-                args.real_image_path, 
+                args.train_prompt_path,
                 is_sdxl=True,
                 tokenizer_one=tokenizer_one,
                 tokenizer_two=tokenizer_two
             )
-        else:        
+
+            # also load the training dataset images, this will be useful for GAN loss
+            real_dataset = SDImageDatasetLMDB(
+                args.real_image_path,
+                is_sdxl=True,
+                tokenizer_one=tokenizer_one,
+                tokenizer_two=tokenizer_two
+            )
+        else:
             tokenizer = CLIPTokenizer.from_pretrained(
                 args.model_id, subfolder="tokenizer"
             )
             uncond_input_ids = tokenizer(
-                [""], max_length=tokenizer.model_max_length, 
+                [""], max_length=tokenizer.model_max_length,
                 return_tensors="pt", padding="max_length", truncation=True
             ).input_ids.to(accelerator.device)
 
             dataset = SDTextDataset(args.train_prompt_path, tokenizer, is_sdxl=False)
             self.uncond_embedding = self.model.text_encoder(uncond_input_ids)[0]
 
-            # also load the training dataset images, this will be useful for GAN loss 
+            # also load the training dataset images, this will be useful for GAN loss
             real_dataset = SDImageDatasetLMDB(
-                args.real_image_path, 
+                args.real_image_path,
                 is_sdxl=False,
                 tokenizer_one=tokenizer
             )
@@ -130,40 +138,40 @@ class Trainer:
         self.dataloader = cycle(dataloader)
 
         real_dataloader = torch.utils.data.DataLoader(
-            real_dataset, num_workers=args.num_workers, 
-            batch_size=args.batch_size, shuffle=True, 
+            real_dataset, num_workers=args.num_workers,
+            batch_size=args.batch_size, shuffle=True,
             drop_last=True
         )
         real_dataloader = accelerator.prepare(real_dataloader)
         self.real_dataloader = cycle(real_dataloader)
 
-        # use two dataloader 
-        # as the generator and guidance model are trained at different paces 
+        # use two dataloader
+        # as the generator and guidance model are trained at different paces
         guidance_dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, shuffle=True, drop_last=True)
         guidance_dataloader = accelerator.prepare(guidance_dataloader)
         self.guidance_dataloader = cycle(guidance_dataloader)
 
-        self.guidance_cls_loss_weight = args.guidance_cls_loss_weight 
+        self.guidance_cls_loss_weight = args.guidance_cls_loss_weight
 
-        self.cls_on_clean_image = args.cls_on_clean_image 
-        self.gen_cls_loss = args.gen_cls_loss 
-        self.gen_cls_loss_weight = args.gen_cls_loss_weight 
-        self.previous_time = None 
+        self.cls_on_clean_image = args.cls_on_clean_image
+        self.gen_cls_loss = args.gen_cls_loss
+        self.gen_cls_loss_weight = args.gen_cls_loss_weight
+        self.previous_time = None
 
         if self.denoising:
             denoising_dataloader = torch.utils.data.DataLoader(
-                real_dataset, num_workers=args.num_workers, 
-                batch_size=args.batch_size, shuffle=True, 
+                real_dataset, num_workers=args.num_workers,
+                batch_size=args.batch_size, shuffle=True,
                 drop_last=True
             )
             denoising_dataloader = accelerator.prepare(denoising_dataloader)
             self.denoising_dataloader = cycle(denoising_dataloader)
 
-        self.fsdp = args.fsdp 
+        self.fsdp = args.fsdp
 
         if self.fsdp and (args.ckpt_only_path is None):
             # in fsdp hybrid_shard case, parameters initialized on different nodes may have different values
-            # to fix this, we first save the checkpoint in the main process and reload it 
+            # to fix this, we first save the checkpoint in the main process and reload it
             generator_path = os.path.join(args.output_path, f"checkpoint_model_{self.step:06d}", "pytorch_model.bin")
             guidance_path = os.path.join(args.output_path, f"checkpoint_model_{self.step:06d}", "pytorch_model_1.bin")
 
@@ -183,22 +191,22 @@ class Trainer:
                 print("reloading done")
 
         if self.fsdp:
-            # the self.model is not wrapped in fsdp, only its two subnetworks are wrapped 
+            # the self.model is not wrapped in fsdp, only its two subnetworks are wrapped
             self.model.feedforward_model, self.model.guidance_model = accelerator.prepare(
                 self.model.feedforward_model, self.model.guidance_model
             )
 
         self.optimizer_generator = torch.optim.AdamW(
-            [param for param in self.model.feedforward_model.parameters() if param.requires_grad], 
-            lr=args.generator_lr, 
-            betas=(0.9, 0.999),  # pytorch's default 
-            weight_decay=0.01  # pytorch's default 
+            [param for param in self.model.feedforward_model.parameters() if param.requires_grad],
+            lr=args.generator_lr,
+            betas=(0.9, 0.999),  # pytorch's default
+            weight_decay=0.01  # pytorch's default
         )
         self.optimizer_guidance = torch.optim.AdamW(
-            [param for param in self.model.guidance_model.parameters() if param.requires_grad], 
-            lr=args.guidance_lr, 
-            betas=(0.9, 0.999),  # pytorch's default 
-            weight_decay=0.01  # pytorch's default 
+            [param for param in self.model.guidance_model.parameters() if param.requires_grad],
+            lr=args.guidance_lr,
+            betas=(0.9, 0.999),  # pytorch's default
+            weight_decay=0.01  # pytorch's default
         )
 
         # actually this scheduler is not very useful (it warms up from 0 to max_lr in 500 / num_gpu steps), but we keep it here for consistency
@@ -206,37 +214,37 @@ class Trainer:
             "constant_with_warmup",
             optimizer=self.optimizer_generator,
             num_warmup_steps=args.warmup_step,
-            num_training_steps=args.train_iters 
+            num_training_steps=args.train_iters
         )
         self.scheduler_guidance = get_scheduler(
             "constant_with_warmup",
             optimizer=self.optimizer_guidance,
             num_warmup_steps=args.warmup_step,
-            num_training_steps=args.train_iters 
+            num_training_steps=args.train_iters
         )
 
-        if self.fsdp: 
+        if self.fsdp:
             (
-                self.optimizer_generator, self.optimizer_guidance, 
-                self.scheduler_generator, self.scheduler_guidance 
+                self.optimizer_generator, self.optimizer_guidance,
+                self.scheduler_generator, self.scheduler_guidance
             ) = accelerator.prepare(
-                self.optimizer_generator, self.optimizer_guidance, 
-                self.scheduler_generator, self.scheduler_guidance 
-            ) 
+                self.optimizer_generator, self.optimizer_guidance,
+                self.scheduler_generator, self.scheduler_guidance
+            )
         else:
-            # the self.model is not wrapped in ddp, only its two subnetworks are wrapped 
+            # the self.model is not wrapped in ddp, only its two subnetworks are wrapped
             (
                 self.model.feedforward_model, self.model.guidance_model, self.optimizer_generator,
-                self.optimizer_guidance, self.scheduler_generator, self.scheduler_guidance 
-            ) = accelerator.prepare(
-                self.model.feedforward_model, self.model.guidance_model, self.optimizer_generator, 
                 self.optimizer_guidance, self.scheduler_generator, self.scheduler_guidance
-            ) 
+            ) = accelerator.prepare(
+                self.model.feedforward_model, self.model.guidance_model, self.optimizer_generator,
+                self.optimizer_guidance, self.scheduler_generator, self.scheduler_guidance
+            )
 
         self.accelerator = accelerator
         self.train_iters = args.train_iters
         self.batch_size = args.batch_size
-        self.resolution = args.resolution 
+        self.resolution = args.resolution
         self.log_iters = args.log_iters
         self.wandb_iters = args.wandb_iters
         self.latent_resolution = args.latent_resolution
@@ -261,7 +269,7 @@ class Trainer:
         ):
             checkpoint = model.state_dict()
 
-        return checkpoint 
+        return checkpoint
 
     def load(self, checkpoint_path):
         # this is used for non-fsdp models.
@@ -270,36 +278,46 @@ class Trainer:
         self.accelerator.print(f"Loaded checkpoint from {checkpoint_path}")
 
     def save(self):
-        # NOTE: we save the checkpoints to two places 
+        # NOTE: we save the checkpoints to two places
         # 1. output_path: save the latest one, this is assumed to be a permanent storage
         # 2. cache_dir: save all checkpoints, this is assumed to be a temporary storage
-        # training states 
+        # training states
         # If FSDP is used, we only save the model parameter as I haven't figured out how to save the optimizer state without oom yet, help is appreciated.
-        # Otherwise, we use the default accelerate save_state function 
-        
+        # Otherwise, we use the default accelerate save_state function
+
         if self.fsdp:
             feedforward_state_dict = self.fsdp_state_dict(self.model.feedforward_model)
             guidance_model_state_dict = self.fsdp_state_dict(self.model.guidance_model)
 
+        paths = [self.output_path if self.accelerator.is_main_process else None]
+        torch.distributed.broadcast_object_list(paths, src=0)
+        output_path = os.path.join(paths[0], f"checkpoint_model_{self.step:06d}")
+        os.makedirs(output_path, exist_ok=True)
+        if not self.fsdp:
+            self.accelerator.save_state(output_path)
+        self.accelerator.wait_for_everyone()
         if self.accelerator.is_main_process:
             output_path = os.path.join(self.output_path, f"checkpoint_model_{self.step:06d}")
             os.makedirs(output_path, exist_ok=True)
             print(f"start saving checkpoint to {output_path}")
 
-            if self.fsdp: 
+            if self.fsdp:
                 torch.save(feedforward_state_dict, os.path.join(output_path, f"pytorch_model.bin"))
                 del feedforward_state_dict
                 torch.save(guidance_model_state_dict, os.path.join(output_path, f"pytorch_model_1.bin"))
                 del guidance_model_state_dict
             else:
-                self.accelerator.save_state(output_path) 
+                with open(os.path.join(output_path, 'training_progress.json'), 'w') as f:
+                    json.dump({'completed_steps': self.step, 'global_batch_size': self.args.target_global_batch_size,
+                               'world_size': self.accelerator.num_processes,
+                               'gradient_accumulation_steps': self.args.gradient_accumulation_steps}, f)
 
-            # remove previous checkpoints 
+            # remove previous checkpoints
             for folder in os.listdir(self.output_path):
                 if folder.startswith("checkpoint_model") and folder != f"checkpoint_model_{self.step:06d}":
                     shutil.rmtree(os.path.join(self.output_path, folder))
 
-            # copy checkpoints to cache 
+            # copy checkpoints to cache
             # overwrite the cache
             if os.path.exists(os.path.join(self.cache_dir, f"checkpoint_model_{self.step:06d}")):
                 shutil.rmtree(os.path.join(self.cache_dir, f"checkpoint_model_{self.step:06d}"))
@@ -324,112 +342,120 @@ class Trainer:
 
         accelerator = self.accelerator
 
-        # 4 channel for SD-VAE, please adapt for other autoencoders 
-        noise = torch.randn(self.batch_size, self.latent_channel, self.latent_resolution, self.latent_resolution, device=accelerator.device)
-        visual = self.step % self.wandb_iters == 0
-        COMPUTE_GENERATOR_GRADIENT = self.step % self.dfake_gen_update_ratio == 0
-
-        if COMPUTE_GENERATOR_GRADIENT:
-            text_embedding = next(self.dataloader)
-        else:
-            text_embedding = next(self.guidance_dataloader) 
-
-        if self.sdxl:
-            # SDXL uses zero as the uncond_embedding
-            uncond_embedding = None 
-        else:
-            text_embedding = text_embedding['text_input_ids_one'].squeeze(1) # actually it is tokenized text prompts
-            uncond_embedding = self.uncond_embedding.repeat(len(text_embedding), 1, 1)
-
-        if self.denoising:
-            denoising_dict = next(self.denoising_dataloader)
-        else:
+        if self.args.gradient_accumulation_steps > 1:
+            COMPUTE_GENERATOR_GRADIENT = self.step % self.dfake_gen_update_ratio == 0
+            visual = self.step % self.wandb_iters == 0
+            (generator_loss_dict, guidance_loss_dict, generator_log_dict, guidance_log_dict,
+             generator_grad_norm, guidance_grad_norm, noise, real_train_dict) = accumulated_step(self)
             denoising_dict = None
-
-        if self.cls_on_clean_image:
-            real_train_dict = next(self.real_dataloader) 
         else:
-            real_train_dict = None
+            # 4 channel for SD-VAE, please adapt for other autoencoders
+            noise = torch.randn(self.batch_size, self.latent_channel, self.latent_resolution, self.latent_resolution, device=accelerator.device)
+            visual = self.step % self.wandb_iters == 0
+            COMPUTE_GENERATOR_GRADIENT = self.step % self.dfake_gen_update_ratio == 0
 
-        # generate images and optionaly compute the generator gradient
-        generator_loss_dict, generator_log_dict = self.model(
-            noise, text_embedding, uncond_embedding, 
-            visual=visual, denoising_dict=denoising_dict,
-            compute_generator_gradient=COMPUTE_GENERATOR_GRADIENT,
-            real_train_dict=real_train_dict,
-            generator_turn=True,
-            guidance_turn=False
-        )
+            if COMPUTE_GENERATOR_GRADIENT:
+                text_embedding = next(self.dataloader)
+            else:
+                text_embedding = next(self.guidance_dataloader)
 
-        # first update the generator if the current step is a multiple of dfake_gen_update_ratio
-        generator_loss = 0.0 
+            if self.sdxl:
+                # SDXL uses zero as the uncond_embedding
+                uncond_embedding = None
+            else:
+                text_embedding = text_embedding['text_input_ids_one'].squeeze(1) # actually it is tokenized text prompts
+                uncond_embedding = self.uncond_embedding.repeat(len(text_embedding), 1, 1)
 
-        if COMPUTE_GENERATOR_GRADIENT:
-            if not self.args.gan_alone:
-                generator_loss += generator_loss_dict["loss_dm"] * self.args.dm_loss_weight
+            if self.denoising:
+                denoising_dict = next(self.denoising_dataloader)
+            else:
+                denoising_dict = None
 
-            if self.cls_on_clean_image and self.gen_cls_loss:
-                generator_loss += generator_loss_dict["gen_cls_loss"] * self.gen_cls_loss_weight
-                
-            self.accelerator.backward(generator_loss)
-            generator_grad_norm = accelerator.clip_grad_norm_(self.model.feedforward_model.parameters(), self.max_grad_norm)
-            self.optimizer_generator.step()
-            
-            # if we also compute gan loss, the classifier may also receive gradient 
-            # zero out guidance model's gradient avoids undesired gradient accumulation
-            self.optimizer_generator.zero_grad() 
+            if self.cls_on_clean_image:
+                real_train_dict = next(self.real_dataloader)
+            else:
+                real_train_dict = None
+
+            # generate images and optionaly compute the generator gradient
+            generator_loss_dict, generator_log_dict = self.model(
+                noise, text_embedding, uncond_embedding,
+                visual=visual, denoising_dict=denoising_dict,
+                compute_generator_gradient=COMPUTE_GENERATOR_GRADIENT,
+                real_train_dict=real_train_dict,
+                generator_turn=True,
+                guidance_turn=False
+            )
+
+            # first update the generator if the current step is a multiple of dfake_gen_update_ratio
+            generator_loss = 0.0
+
+            if COMPUTE_GENERATOR_GRADIENT:
+                if not self.args.gan_alone:
+                    generator_loss += generator_loss_dict["loss_dm"] * self.args.dm_loss_weight
+
+                if self.cls_on_clean_image and self.gen_cls_loss:
+                    generator_loss += generator_loss_dict["gen_cls_loss"] * self.gen_cls_loss_weight
+
+                self.accelerator.backward(generator_loss)
+                generator_grad_norm = accelerator.clip_grad_norm_(self.model.feedforward_model.parameters(), self.max_grad_norm)
+                self.optimizer_generator.step()
+
+                # if we also compute gan loss, the classifier may also receive gradient
+                # zero out guidance model's gradient avoids undesired gradient accumulation
+                self.optimizer_generator.zero_grad()
+
+            self.scheduler_generator.step()
+
+            # update the guidance model (dfake and classifier)
+            guidance_loss_dict, guidance_log_dict = self.model(
+                noise, text_embedding, uncond_embedding,
+                visual=visual, denoising_dict=denoising_dict,
+                real_train_dict=real_train_dict,
+                compute_generator_gradient=COMPUTE_GENERATOR_GRADIENT,
+                generator_turn=False,
+                guidance_turn=True,
+                guidance_data_dict=generator_log_dict['guidance_data_dict']
+            )
+
+            guidance_loss = 0
+
+            guidance_loss += guidance_loss_dict["loss_fake_mean"]
+
+            if self.cls_on_clean_image:
+                guidance_loss += guidance_loss_dict["guidance_cls_loss"] * self.guidance_cls_loss_weight
+
+            self.accelerator.backward(guidance_loss)
+            guidance_grad_norm = accelerator.clip_grad_norm_(self.model.guidance_model.parameters(), self.max_grad_norm)
+            self.optimizer_guidance.step()
             self.optimizer_guidance.zero_grad()
+            self.scheduler_guidance.step()
 
-        self.scheduler_generator.step()
-
-        # update the guidance model (dfake and classifier)
-        guidance_loss_dict, guidance_log_dict = self.model(
-            noise, text_embedding, uncond_embedding, 
-            visual=visual, denoising_dict=denoising_dict,
-            real_train_dict=real_train_dict,
-            compute_generator_gradient=COMPUTE_GENERATOR_GRADIENT,
-            generator_turn=False,
-            guidance_turn=True,
-            guidance_data_dict=generator_log_dict['guidance_data_dict']
-        )
-
-        guidance_loss = 0 
-
-        guidance_loss += guidance_loss_dict["loss_fake_mean"]
-
-        if self.cls_on_clean_image:
-            guidance_loss += guidance_loss_dict["guidance_cls_loss"] * self.guidance_cls_loss_weight
-
-        self.accelerator.backward(guidance_loss)
-        guidance_grad_norm = accelerator.clip_grad_norm_(self.model.guidance_model.parameters(), self.max_grad_norm)
-        self.optimizer_guidance.step()
-        self.optimizer_guidance.zero_grad()
-        self.optimizer_generator.zero_grad() # zero out the generator's gradient as well
-        self.scheduler_guidance.step()
-
-        # combine the two dictionaries 
+        # combine the two dictionaries
         loss_dict = {**generator_loss_dict, **guidance_loss_dict}
         log_dict = {**generator_log_dict, **guidance_log_dict}
 
         generated_image_mean = log_dict["guidance_data_dict"]['image'].mean()
         generated_image_std = log_dict["guidance_data_dict"]['image'].std()
 
-        generated_image_mean = accelerator.gather(generated_image_mean).mean()
-        generated_image_std = accelerator.gather(generated_image_std).mean()
+        gathered_stats = accelerator.gather(torch.stack((generated_image_mean, generated_image_std)))
+        generated_image_mean, generated_image_std = gathered_stats.view(-1, 2).mean(dim=0)
 
         if COMPUTE_GENERATOR_GRADIENT:
             if not self.args.gan_alone:
                 dmtrain_pred_real_image_mean = log_dict['dmtrain_pred_real_image'].mean()
                 dmtrain_pred_real_iamge_std = log_dict['dmtrain_pred_real_image'].std()
 
-                dmtrain_pred_real_image_mean = accelerator.gather(dmtrain_pred_real_image_mean).mean()
-                dmtrain_pred_real_iamge_std = accelerator.gather(dmtrain_pred_real_iamge_std).mean()
-
                 dmtrain_pred_fake_image_mean = log_dict['dmtrain_pred_fake_image'].mean()
                 dmtrain_pred_fake_image_std = log_dict['dmtrain_pred_fake_image'].std()
 
-                dmtrain_pred_fake_image_mean = accelerator.gather(dmtrain_pred_fake_image_mean).mean()
-                dmtrain_pred_fake_image_std = accelerator.gather(dmtrain_pred_fake_image_std).mean()
+                gathered_dm_stats = accelerator.gather(torch.stack((
+                    dmtrain_pred_real_image_mean, dmtrain_pred_real_iamge_std,
+                    dmtrain_pred_fake_image_mean, dmtrain_pred_fake_image_std
+                )))
+                (
+                    dmtrain_pred_real_image_mean, dmtrain_pred_real_iamge_std,
+                    dmtrain_pred_fake_image_mean, dmtrain_pred_fake_image_std
+                ) = gathered_dm_stats.view(-1, 4).mean(dim=0)
 
         if self.denoising:
             original_image_mean = denoising_dict["images"].mean()
@@ -489,7 +515,7 @@ class Trainer:
             if not self.args.gan_alone:
                 log_dict['dmtrain_pred_real_image_decoded'] = accelerator.gather(log_dict['dmtrain_pred_real_image_decoded'])
                 log_dict['dmtrain_pred_fake_image_decoded'] = accelerator.gather(log_dict['dmtrain_pred_fake_image_decoded'])
-        
+
             log_dict['generated_image'] = accelerator.gather(log_dict['generated_image'])
 
             if self.denoising:
@@ -503,10 +529,10 @@ class Trainer:
             with torch.no_grad():
                 if not self.args.gan_alone:
                     (
-                        dmtrain_pred_real_image, dmtrain_pred_fake_image, 
+                        dmtrain_pred_real_image, dmtrain_pred_fake_image,
                         dmtrain_gradient_norm
                     ) = (
-                        log_dict['dmtrain_pred_real_image_decoded'], log_dict['dmtrain_pred_fake_image_decoded'], 
+                        log_dict['dmtrain_pred_real_image_decoded'], log_dict['dmtrain_pred_fake_image_decoded'],
                         log_dict['dmtrain_gradient_norm']
                     )
 
@@ -514,7 +540,7 @@ class Trainer:
                     dmtrain_pred_fake_image_grid = prepare_images_for_saving(dmtrain_pred_fake_image, resolution=self.resolution, grid_size=self.grid_size)
 
                     difference_scale_grid = draw_valued_array(
-                        (dmtrain_pred_real_image - dmtrain_pred_fake_image).abs().mean(dim=[1, 2, 3]).cpu().numpy(), 
+                        (dmtrain_pred_real_image - dmtrain_pred_fake_image).abs().mean(dim=[1, 2, 3]).cpu().numpy(),
                         output_dir=self.wandb_folder, grid_size=self.grid_size
                     )
 
@@ -532,7 +558,7 @@ class Trainer:
                         "difference_norm_grid": wandb.Image(difference_scale_grid),
                     }
                 else:
-                    data_dict = {} 
+                    data_dict = {}
 
                 generated_image = log_dict['generated_image']
                 generated_image_grid = prepare_images_for_saving(generated_image, resolution=self.resolution, grid_size=self.grid_size)
@@ -591,13 +617,30 @@ class Trainer:
                     data_dict,
                     step=self.step
                 )
-        
+
         self.accelerator.wait_for_everyone()
 
     def train(self):
-        for index in range(self.step, self.train_iters):                
+        initial_step = self.step
+        update_counts = {'generator': 0, 'guidance': 0}
+        def count_update(name):
+            def hook(*unused):
+                update_counts[name] += 1
+            return hook
+        handles = []
+        for name, wrapped in [('generator', self.optimizer_generator), ('guidance', self.optimizer_guidance)]:
+            raw = getattr(wrapped, 'optimizer', wrapped)
+            handles.append(raw.register_step_post_hook(count_update(name)))
+        for index in range(self.step, self.train_iters):
+            started = time.monotonic()
             self.train_one_step()
-            if (not self.no_save)  and self.step % self.log_iters == 0:
+            self.accelerator.wait_for_everyone()
+            self.step += 1
+            if self.accelerator.is_main_process:
+                print(json.dumps({'event':'effective_step','completed_steps':self.step,
+                                  'step_seconds':time.monotonic()-started,
+                                  'peak_allocated_gib':torch.cuda.max_memory_allocated()/2**30}), flush=True)
+            if (not self.no_save) and (self.step % self.log_iters == 0 or self.step == self.train_iters):
                 self.save()
 
             self.accelerator.wait_for_everyone()
@@ -609,7 +652,32 @@ class Trainer:
                     wandb.log({"per iteration time": current_time-self.previous_time}, step=self.step)
                     self.previous_time = current_time
 
-            self.step += 1
+
+        expected_g = sum(i % self.dfake_gen_update_ratio == 0 for i in range(initial_step, self.step))
+        assert update_counts == {'generator': expected_g, 'guidance': self.step-initial_step}, update_counts
+        samples = []
+        with torch.no_grad():
+            for module in [self.model.feedforward_model, self.model.guidance_model]:
+                for param in module.parameters():
+                    if not torch.isfinite(param).all():
+                        raise FloatingPointError('Nonfinite final model parameter')
+                    flat = param.detach().flatten()
+                    samples.append(flat[torch.tensor([0, flat.numel()//2, flat.numel()-1], device=flat.device)].float())
+            values = torch.cat(samples)
+            reference = values.clone()
+            torch.distributed.broadcast(reference, src=0)
+            assert torch.equal(values, reference), 'Model replicas diverged across ranks'
+        if self.accelerator.is_main_process:
+            result = {'event':'training_audit', 'initial_step':initial_step, 'completed_steps':self.step,
+                      'optimizer_updates':update_counts, 'parameters_finite':True,
+                      'replica_parameter_samples_equal':True, 'world_size':self.accelerator.num_processes}
+            print(json.dumps(result), flush=True)
+            with open(os.path.join(self.output_path, 'audit.json'), 'w') as f:
+                json.dump(result, f, indent=2)
+        for handle in handles:
+            handle.remove()
+        self.accelerator.wait_for_everyone()
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -634,6 +702,8 @@ def parse_args():
     parser.add_argument("--min_step_percent", type=float, default=0.02, help="minimum step percent for training")
     parser.add_argument("--max_step_percent", type=float, default=0.98, help="maximum step percent for training")
     parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
+    parser.add_argument("--target_global_batch_size", type=int)
+    parser.add_argument("--schedule_world_size", type=int, default=64)
     parser.add_argument("--use_fp16", action="store_true")
     parser.add_argument("--num_train_timesteps", type=int, default=1000)
     parser.add_argument("--ckpt_only_path", type=str, default=None, help="checkpoint (no optimizer state) only path")
@@ -680,19 +750,22 @@ def parse_args():
     parser.add_argument("--lora_rank", type=int, default=64)
     parser.add_argument("--lora_alpha", type=float, default=8)
     parser.add_argument("--lora_dropout", type=float, default=0.0)
-    
+
     args = parser.parse_args()
     env_local_rank = int(os.environ.get("LOCAL_RANK", -1))
     if env_local_rank != -1 and env_local_rank != args.local_rank:
         args.local_rank = env_local_rank
 
-    assert args.gradient_accumulation_steps == 1, "grad accumulation not supported yet"
+    assert args.gradient_accumulation_steps >= 1
+    if args.gradient_accumulation_steps > 1:
+        assert not (args.fsdp or args.sdxl or args.denoising), 'Accumulation currently validated for SD1.5 DDP only'
+    assert args.schedule_world_size >= 1
 
     assert not (args.fsdp and args.gradient_checkpointing), "currently, we don't support both options. open an issue for details."
 
     assert args.wandb_iters % args.dfake_gen_update_ratio == 0, "wandb_iters should be a multiple of dfake_gen_update_ratio"
 
-    return args 
+    return args
 
 if __name__ == "__main__":
     args = parse_args()

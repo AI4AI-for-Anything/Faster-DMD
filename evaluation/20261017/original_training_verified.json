@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "phase": "accum_full",
+  "completed_steps": 41000,
+  "optimizer_updates": {
+    "generator": 200,
+    "guidance": 2000
+  },
+  "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000",
+  "last_cycle_mean_seconds": 29.42320355839329,
+  "estimated_2000_step_hours": 16.346224199107382,
+  "peak_allocated_gib": 66.38216495513916,
+  "scheduler_ticks": 128000,
+  "rank_rng_files": 8,
+  "model_and_optimizer_states_finite": true,
+  "audit": {
+    "event": "training_audit",
+    "initial_step": 39000,
+    "completed_steps": 41000,
+    "optimizer_updates": {
+      "generator": 200,
+      "guidance": 2000
+    },
+    "parameters_finite": true,
+    "replica_parameter_samples_equal": true,
+    "world_size": 8
+  }
+}

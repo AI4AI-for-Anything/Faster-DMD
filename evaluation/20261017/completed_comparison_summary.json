@@ -1,0 +1,33 @@
+{
+  "fids": {
+    "original_accum_041000": 8.653609178209024,
+    "optimized_041000": 8.70301460173539,
+    "official_041000": 8.342909368778805,
+    "official_039000": 9.27584408091667
+  },
+  "shared_eval_protocol": {
+    "samples": 30000,
+    "seed": 10,
+    "eval_batch_size": 10,
+    "eval_res": 256,
+    "reference_images": 40504,
+    "pred_eps": true,
+    "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+  },
+  "sampling_worker_hashes_and_offsets_match": true,
+  "timing": {
+    "original": {
+      "steps": 2000,
+      "total_step_seconds": 58994.49328364234,
+      "mean_step_seconds": 29.49724664182117
+    },
+    "optimized": {
+      "steps": 2000,
+      "total_step_seconds": 35254.15348801209,
+      "mean_step_seconds": 17.627076744006043
+    }
+  },
+  "step_timing_excludes_checkpoint_writes": true,
+  "optimized_vs_original_step_speedup": 1.6734054699030847,
+  "quality_note": "One training seed per arm; observed FID delta is not a statistical equivalence claim."
+}

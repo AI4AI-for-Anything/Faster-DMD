@@ -1,0 +1,195 @@
+{
+  "original_accum_041000": {
+    "parity": {
+      "samples": 80,
+      "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+      "pred_eps": true,
+      "byte_identical": true,
+      "max_uint8_difference": 0,
+      "different_values": 0,
+      "scope": "First eight global batches; compares original serial sampler against the same sample function partitioned across eight H20 GPUs. All full-run batch indices retain their original seeds."
+    },
+    "result": {
+      "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+      "fid": 8.653609178209024,
+      "samples": 30000,
+      "seed": 10,
+      "eval_batch_size": 10,
+      "eval_res": 256,
+      "reference_images": 40504,
+      "pred_eps": true,
+      "fid_and_merge_seconds": 112.24048174801283,
+      "sampling_shards": [
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 0,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/0/images.npy",
+          "images_sha256": "e30af57ab13d58c3c2e0e01d6dc7965b43a5229a5f2f0fe05be65dc8567db150",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 508.63971075601876,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 375,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/1/images.npy",
+          "images_sha256": "c61c97263506e9b509ef5bf12c282ffde585258fd1c10e2a640631d81baa9e9a",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 506.30837749596685,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 750,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/2/images.npy",
+          "images_sha256": "df7dadfcb89bea60372e7c70e2a6fc5099b6cf3d4353ba658dc9c1c64a73a91a",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 505.3625453870045,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 1125,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/3/images.npy",
+          "images_sha256": "ed87353d5d6e52bb65b6af8a43fbe362d55c5c8a3eaccf3d814a3604ccde9b02",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 508.61932977999095,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 1500,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/4/images.npy",
+          "images_sha256": "eeb88732bea1508162cd96255d685db5d246d0c7e1cb48bcd02721378b412724",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 506.15180741704535,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 1875,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/5/images.npy",
+          "images_sha256": "d9ef320c351f9bbc88d73796e432dba46d566a001c22dbf0928ac130fe31ca46",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 503.215365236043,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 2250,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/6/images.npy",
+          "images_sha256": "22cc26436394e8f11461e5720145dbd62d3e98df43211f37f95b6f43c8d2d442",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 503.0593695170246,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        },
+        {
+          "checkpoint": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+          "samples": 3750,
+          "batch_offset": 2625,
+          "pred_eps": true,
+          "seed": 10,
+          "batch_size": 10,
+          "dtype": "uint8",
+          "shape": [
+            3750,
+            512,
+            512,
+            3
+          ],
+          "images_file": "/path/to/baseline-run/fid_041000/original_accum_041000/full_shards/7/images.npy",
+          "images_sha256": "f3423f36e57bd3f9343b036343881b97d40765404585d6bfec986df363fc2677",
+          "upstream_sampler_sha256": "0241dbebd1ff9550ddf50c6fd536838e06b010aa5c3cf12004bcbeb13021736a",
+          "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+          "seconds": 493.7428839399945,
+          "sampling_rule": "Unmodified upstream sample code; contiguous prompt slice; enumerate uses global batch offset"
+        }
+      ],
+      "protocol": "SD1.5 epsilon-to-x0; upstream sampler with global batch seeds; FP32 TF32; official bundled clean FID, center crop and resize 256"
+    }
+  }
+}

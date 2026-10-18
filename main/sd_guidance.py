@@ -134,6 +134,9 @@ class SDGuidance(nn.Module):
 
             self.cls_pred_branch.requires_grad_(True)
 
+        torch._dynamo.config.optimize_ddp = False
+        self.fake_unet.forward = torch.compile(self.fake_unet.forward, mode="default")
+
         self.sdxl = args.sdxl 
         self.gradient_checkpointing = args.gradient_checkpointing 
 
@@ -164,6 +167,19 @@ class SDGuidance(nn.Module):
         logits = self.cls_pred_branch(rep).squeeze(dim=[2, 3])
         return logits
 
+    def _make_cls_input(self, image):
+        timesteps = torch.randint(
+            0, self.diffusion_gan_max_timestep, [image.shape[0]],
+            device=image.device, dtype=torch.long
+        )
+        image = self.scheduler.add_noise(image, torch.randn_like(image), timesteps)
+        return image, timesteps
+
+    def _concat_cls_conditions(self, first, second):
+        if first is None:
+            return None
+        return {key: torch.cat([first[key], second[key]]) for key in first}
+
 
     def compute_distribution_matching_loss(
         self, 
@@ -189,12 +205,13 @@ class SDGuidance(nn.Module):
             noisy_latents = self.scheduler.add_noise(latents, noise, timesteps)
 
             # run at full precision as autocast and no_grad doesn't work well together 
-            pred_fake_noise = predict_noise(
-                self.fake_unet, noisy_latents, text_embedding, uncond_embedding, 
-                timesteps, guidance_scale=self.fake_guidance_scale,
-                unet_added_conditions=unet_added_conditions,
-                uncond_unet_added_conditions=uncond_unet_added_conditions
-            )  
+            with self.network_context_manager:
+                pred_fake_noise = predict_noise(
+                    self.fake_unet, noisy_latents, text_embedding, uncond_embedding,
+                    timesteps, guidance_scale=self.fake_guidance_scale,
+                    unet_added_conditions=unet_added_conditions,
+                    uncond_unet_added_conditions=uncond_unet_added_conditions
+                )
 
             pred_fake_image = get_x0_from_noise(
                 noisy_latents.double(), pred_fake_noise.double(), self.alphas_cumprod.double(), timesteps
@@ -264,6 +281,14 @@ class SDGuidance(nn.Module):
     ):
         if self.gradient_checkpointing:
             self.fake_unet.enable_gradient_checkpointing()
+            for name, module in self.fake_unet.named_modules():
+                if (name.startswith("down_blocks.3") or name.startswith("up_blocks.0") or
+                        name.startswith("down_blocks.2") or name.startswith("up_blocks.1") or
+                        name.startswith("down_blocks.1") or name.startswith("up_blocks.2") or
+                        name.startswith("mid_block") or
+                        (name.startswith("down_blocks.0") or name.startswith("up_blocks.3"))):
+                    if hasattr(module, "gradient_checkpointing"):
+                        module.gradient_checkpointing = False
         latents = latents.detach()
         batch_size = latents.shape[0]
         noise = torch.randn_like(latents)
@@ -372,16 +397,26 @@ class SDGuidance(nn.Module):
             real_unet_added_conditions=None, 
             fake_unet_added_conditions=None
         ):
-        pred_realism_on_real = self.compute_cls_logits(
-            real_image.detach(), 
-            text_embedding=real_text_embedding,
-            unet_added_conditions=real_unet_added_conditions
+        real_image, real_timesteps = self._make_cls_input(real_image.detach())
+        fake_image, fake_timesteps = self._make_cls_input(fake_image.detach())
+        classifier_input = torch.cat([real_image, fake_image])
+        classifier_timesteps = torch.cat([real_timesteps, fake_timesteps])
+        classifier_text = torch.cat([real_text_embedding, fake_text_embedding])
+        classifier_conditions = self._concat_cls_conditions(
+            real_unet_added_conditions, fake_unet_added_conditions
         )
-        pred_realism_on_fake = self.compute_cls_logits(
-            fake_image.detach(), 
-            text_embedding=fake_text_embedding,
-            unet_added_conditions=fake_unet_added_conditions
-        )
+        with self.network_context_manager:
+            rep = self.fake_unet.forward(
+                classifier_input, classifier_timesteps, classifier_text,
+                added_cond_kwargs=classifier_conditions,
+                classify_mode=True
+            )
+        rep = rep[-1].float()
+        real_rep, fake_rep = rep.chunk(2)
+        # Keep two classifier calls and output records, while sharing the
+        # expensive fake-UNet bottleneck traversal above.
+        pred_realism_on_real = self.cls_pred_branch(real_rep).squeeze(dim=[2, 3])
+        pred_realism_on_fake = self.cls_pred_branch(fake_rep).squeeze(dim=[2, 3])
 
         log_dict = {
             "pred_realism_on_real": torch.sigmoid(pred_realism_on_real).squeeze(dim=1).detach(),

@@ -72,6 +72,9 @@ class SDUniModel(nn.Module):
 
             if self.gradient_checkpointing:
                 self.feedforward_model.enable_gradient_checkpointing()
+
+            torch._dynamo.config.optimize_ddp = False
+            self.feedforward_model.forward = torch.compile(self.feedforward_model.forward, mode="default")
         else:
             raise NotImplementedError()
 
@@ -274,7 +277,7 @@ class SDUniModel(nn.Module):
                 if self.gradient_checkpointing:
                     self.accelerator.unwrap_model(self.feedforward_model).disable_gradient_checkpointing()
 
-                with torch.no_grad():
+                with torch.no_grad(), self.network_context_manager:
                     generated_noise = self.feedforward_model(
                         noisy_image, timesteps.long(), 
                         text_embedding, added_cond_kwargs=unet_added_conditions
@@ -356,7 +359,5 @@ class SDUniModel(nn.Module):
                 guidance_data_dict=guidance_data_dict
             )    
         return loss_dict, log_dict
-
-
 
 

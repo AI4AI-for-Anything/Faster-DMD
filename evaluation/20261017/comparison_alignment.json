@@ -1,0 +1,64 @@
+{
+  "all_training_cli_parameters_match": true,
+  "excluded_run_locations": [
+    "--cache_dir",
+    "--log_path",
+    "--output_path",
+    "--wandb_name"
+  ],
+  "training_arguments": {
+    "--model_id": "/path/to/optimized-runtime/assets/sd15",
+    "--train_iters": "41000",
+    "--log_iters": "500",
+    "--batch_size": "32",
+    "--gradient_accumulation_steps": "8",
+    "--seed": "10",
+    "--resolution": "512",
+    "--latent_resolution": "64",
+    "--initialie_generator": true,
+    "--use_fp16": true,
+    "--generator_lr": "5e-7",
+    "--guidance_lr": "5e-7",
+    "--max_grad_norm": "10",
+    "--warmup_step": "500",
+    "--real_guidance_scale": "1.75",
+    "--fake_guidance_scale": "1",
+    "--dfake_gen_update_ratio": "10",
+    "--gradient_checkpointing": true,
+    "--cls_on_clean_image": true,
+    "--gen_cls_loss": true,
+    "--gen_cls_loss_weight": "1e-3",
+    "--guidance_cls_loss_weight": "1e-2",
+    "--diffusion_gan": true,
+    "--diffusion_gan_max_timestep": "1000",
+    "--num_workers": "4",
+    "--grid_size": "2",
+    "--log_loss": true,
+    "--wandb_iters": "50",
+    "--wandb_project": "dmd-validation",
+    "--ckpt_only_path": "/path/to/optimized-runtime/assets/laion6.25_sd_baseline_8node_guidance1.75_lr1e-5_seed10_dfake10_from_scratch_fid9.28_checkpoint_model_039000",
+    "--train_prompt_path": "/path/to/optimized-runtime/assets/captions_laion_score6.25.pkl",
+    "--real_image_path": "/path/to/optimized-runtime/assets/sd_vae_latents_laion_500k_lmdb",
+    "--target_global_batch_size": "2048",
+    "--schedule_world_size": "64"
+  },
+  "accumulation_helpers_identical": true,
+  "optimized_completed_audit": {
+    "event": "training_audit",
+    "initial_step": 39000,
+    "completed_steps": 41000,
+    "optimizer_updates": {
+      "generator": 200,
+      "guidance": 2000
+    },
+    "parameters_finite": true,
+    "replica_parameter_samples_equal": true,
+    "world_size": 8
+  },
+  "optimized_progress": {
+    "completed_steps": 41000,
+    "global_batch_size": 2048,
+    "world_size": 8,
+    "gradient_accumulation_steps": 8
+  }
+}

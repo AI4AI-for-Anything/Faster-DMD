@@ -1,0 +1,27 @@
+{
+  "upstream_commit": "8d8fa55633d47cfb81bbc7a892e7248f9518763f",
+  "world_size": 8,
+  "microbatch": 32,
+  "accumulation": 8,
+  "global_batch": 2048,
+  "schedule_world_size": 64,
+  "initial_step": 39000,
+  "end_step": 41000,
+  "expected_guidance_updates": 2000,
+  "expected_generator_updates": 200,
+  "precision": "Original upstream use_fp16 recipe; model and loss source unchanged",
+  "model_source_sha256": {
+    "main/sd_guidance.py": "5e5ec5cb2978f40309d6a89d7e52255d508a7707345291284c2d4969918851fd",
+    "main/sd_unified_model.py": "caaf04746dbc0f79b6ca9de9dc37cb5fcae99d0311d2ee2e17eeb5dbea8a8e36",
+    "main/sd_unet_forward.py": "c78803275026c1056f62f3aa1e9d379dda9ed0160cc26bb6e13001fecb118483"
+  },
+  "accumulation_helper_sha256": "7d0f0fab06a6c1ce3c73df93162ad5b8bf073c3cbb93478035177e849ebeed08",
+  "same_accumulation_helper_as_optimized": true,
+  "notes": [
+    "Weights-only resume; optimizer states and warmup restarted as in official recipe and prior optimized run.",
+    "No bitwise equivalence to 64-rank full-batch stochastic run is claimed.",
+    "Only trainer orchestration, accumulation, offline logs, checkpoint save and audit are adapted.",
+    "Original generator/guidance modules retain all original precision contexts; no optimized kernels or bucket-view setting imported."
+  ],
+  "adapted_commit": "e0484c4dcca6011d8dd028c6b80bc35b50cdcc50"
+}

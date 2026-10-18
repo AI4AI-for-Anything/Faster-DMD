@@ -1,0 +1,12 @@
+{
+  "event": "training_audit",
+  "initial_step": 39000,
+  "completed_steps": 41000,
+  "optimizer_updates": {
+    "generator": 200,
+    "guidance": 2000
+  },
+  "parameters_finite": true,
+  "replica_parameter_samples_equal": true,
+  "world_size": 8
+}

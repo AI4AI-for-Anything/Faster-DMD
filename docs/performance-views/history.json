@@ -1,0 +1,68 @@
+{
+  "scope": "Historical 4-H20 screening; local batch 32, accumulation 1, global batch 128. Sequential configurations, not isolated ablations. Final reference is separately remeasured.",
+  "rows": [
+    {
+      "round": 1,
+      "label": "cuDNN autotuning",
+      "kind": "screening",
+      "seconds": 3.4823,
+      "speedup": 1.0725,
+      "reference_seconds": 3.7348,
+      "source": "runs/round1_time/time.json"
+    },
+    {
+      "round": 4,
+      "label": "Batched scalar gathers",
+      "kind": "screening",
+      "seconds": 3.4671,
+      "speedup": 1.0772,
+      "reference_seconds": 3.7348,
+      "source": "runs/round4_time/time.json"
+    },
+    {
+      "round": 7,
+      "label": "BF16 no-grad forwards",
+      "kind": "screening",
+      "seconds": 2.9095,
+      "speedup": 1.2836,
+      "reference_seconds": 3.7348,
+      "source": "runs/round7_time/time.json"
+    },
+    {
+      "round": 19,
+      "label": "DDP buckets and zero-grad cleanup",
+      "kind": "screening",
+      "seconds": 2.8918,
+      "speedup": 1.2915,
+      "reference_seconds": 3.7348,
+      "source": "runs/round19_time/time.json"
+    },
+    {
+      "round": 26,
+      "label": "Less guidance recomputation",
+      "kind": "screening",
+      "seconds": 2.6604,
+      "speedup": 1.4039,
+      "reference_seconds": 3.7348,
+      "source": "runs/round26_time/time.json"
+    },
+    {
+      "round": 34,
+      "label": "Compile both UNets",
+      "kind": "screening",
+      "seconds": 2.2321,
+      "speedup": 1.6732,
+      "reference_seconds": 3.7348,
+      "source": "runs/round34_time/time.json"
+    },
+    {
+      "round": "final",
+      "label": "Final retained configuration",
+      "kind": "full_check",
+      "seconds": 2.1704,
+      "speedup": 1.7218,
+      "reference_seconds": 3.7368,
+      "source": "runs/final_check_20261012/check.json"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "worker_sha256": "1cedc178105e35540b54e62ecfb3b85fa5fd327ef2d332a452f2759b64265f97",
+  "serial_evaluator_sha256": "6ad91b72e1bfed70e9e137c60771b2b33fdb9f51ffe259df7746979f38117ebb",
+  "upstream_sampler_file_sha256": "10f2d7df02d626ff51a2017e6e840818671214a258798fe33326f1b48c4bef89",
+  "models": {
+    "original_accum_041000": {
+      "path": "/path/to/baseline-run/accum_full/output/time_1792160201_seed10/checkpoint_model_041000/pytorch_model.bin",
+      "size": 3438369474,
+      "mtime_ns": 1792220619495100588
+    }
+  },
+  "samples": 30000,
+  "seed": 10,
+  "batch_size": 10,
+  "pred_eps": true,
+  "shards": 8,
+  "parity_samples": 80
+}
