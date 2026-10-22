@@ -90,7 +90,7 @@ L 348.424615 97.2
     <g id="ytick_1">
      <g id="line2d_9"/>
      <g id="text_6">
-      <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(60.364531 136.911413)">Original precision</text>
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #79696b" text-anchor="end" transform="translate(139.04 136.911413)">Baseline (original precision)</text>
       <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(67.796563 146.989445)">+ accumulation</text>
      </g>
     </g>

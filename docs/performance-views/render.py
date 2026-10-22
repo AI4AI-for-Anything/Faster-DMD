@@ -20,7 +20,7 @@ def hero():
  fig=plt.figure(figsize=(9,4.5));fig.text(.06,.90,'Faster-DMD, optimized by AI agents',color=RED,weight='bold',size=19)
  fig.text(.06,.80,'SD1.5 DMD2 · 8 H20 GPUs · global batch 2,048 · 39k → 41k continuation',color=MUTED,size=10)
  ax=fig.add_axes([.23,.24,.40,.46]);vals=[d['timing'][x]['mean_step_seconds'] for x in ['original','optimized']]
- ax.barh([1,0],vals,color=['#D7BDBF',RED],height=.24,zorder=3);ax.set_yticks([1,0],['Original precision\n+ accumulation','Faster-DMD\n+ accumulation'],color=MUTED)
+ ax.barh([1,0],vals,color=['#D7BDBF',RED],height=.24,zorder=3);ax.set_yticks([1,0],['Baseline (original precision)\n+ accumulation','Faster-DMD\n+ accumulation'],color=MUTED)
  for y,v in zip([1,0],vals):ax.text(v+.8,y,f'{v:.3f} s',va='center',color=INK,size=10,weight='bold')
  ax.set_xlim(0,39);ax.set_ylim(-.6,1.6);ax.set_xticks([0,10,20,30]);ax.tick_params(length=0,labelsize=9,colors=MUTED,pad=10)
  for k in ['top','right','left']:ax.spines[k].set_visible(False)
@@ -51,7 +51,7 @@ def history():
   fig.add_artist(FancyBboxPatch((bx,by-.378/height),.41,.585/height,boxstyle='round,pad=0.004,rounding_size=0.007',transform=fig.transFigure,facecolor=CARD,edgecolor='none'))
   fig.text(bx+.014,by-.08/height,tag,size=12,weight='bold',color=RED)
   fig.text(bx+.079,by-.08/height,textwrap.fill(row['label'],width=24,break_long_words=False,break_on_hyphens=False),size=11.5,color=INK,weight='bold',va='center',linespacing=1.35)
- fig.text(.09,top(8.15),'Open marker: timing screen against a frozen reference. Filled: final full check, reference remeasured.\nCumulative configurations, not isolated ablations. Separate workload from the 8-GPU continuation headline.',size=9.5,color=MUTED,linespacing=1.4)
+ fig.text(.09,top(8.15),'Open marker: timing screen against a frozen baseline. Filled: final full check, baseline remeasured.\nCumulative configurations, not isolated ablations. Separate workload from the 8-GPU continuation headline.',size=9.5,color=MUTED,linespacing=1.4)
  save(fig,ROOT/'02-history')
 def modulemap():
  fig=plt.figure(figsize=(9,6.6),facecolor='white');ax=fig.add_axes([0,0,1,1]);ax.set_xlim(0,1);ax.set_ylim(0,1);ax.axis('off')

@@ -30,7 +30,7 @@ For another GPU count or memory budget, adjust `NPROC`, `MICROBATCH` and `GRAD_A
 
 ## Agent Optimization History
 
-The earlier optimization sequence used **4 H20 GPUs, microbatch 32, accumulation 1, global batch 128**. The final benchmark measured **3.7368 s/iteration for the reference and 2.1704 s/iteration for the optimized configuration**, a **1.72×** speedup. Its smaller global batch and short measurement window differ from the eight-GPU continuation above, so the iteration times are not directly comparable.
+The earlier optimization sequence used **4 H20 GPUs, microbatch 32, accumulation 1, global batch 128**. The final benchmark measured **3.7368 s/iteration for the baseline and 2.1704 s/iteration for the optimized configuration**, a **1.72×** speedup. Its smaller global batch and short measurement window differ from the eight-GPU continuation above, so the iteration times are not directly comparable.
 
 ![Historical four-H20 optimization sequence at global batch 128](docs/performance-views/02-history.svg)
 

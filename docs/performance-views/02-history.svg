@@ -402,7 +402,7 @@ z
    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; fill: #292122" transform="translate(109.512 548.782467)">configuration</text>
   </g>
   <g id="text_39">
-   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(58.32 574.718375)">Open marker: timing screen against a frozen reference. Filled: final full check, reference remeasured.</text>
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(58.32 574.718375)">Open marker: timing screen against a frozen baseline. Filled: final full check, baseline remeasured.</text>
    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #79696b" transform="translate(58.32 586.8)">Cumulative configurations, not isolated ablations. Separate workload from the 8-GPU continuation headline.</text>
   </g>
  </g>
